@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive  #响应式和非响应式
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: user-server
+          uri: lb://user-server #lb代表 loadbalancer 负载均衡
+          predicates:
+            - Path=/user/**
+        - id: item-server
+          uri: lb://item-server
+          predicates:
+            - Path=/item/**
+        - id: cart-server
+          uri: lb://cart-server
+          predicates:
+            - Path=/cart/**
+

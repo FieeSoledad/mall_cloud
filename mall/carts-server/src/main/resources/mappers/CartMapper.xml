@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.carts.dao.CartDao">
+    <resultMap id="cartResultMap" type="com.example.carts.domain.Cart">
+        <result column="itemname" property="itemname"/>
+        <result column="price" property="unitprice"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <select id="getCartsByUserId" resultMap="cartResultMap">
+        select it.itemname,it.price,ca.amount
+        from carts ca
+        join items it on it.itemid=ca.itemid
+        where userid = #{userid}
+    </select>
+</mapper>
+

@@ -1,0 +1,35 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /
+  tomcat:
+    #最大线程数
+    max-threads: 1000
+    #最大连接数
+    max-connections: 20000
+    #最大全接连数(TCP)
+    accept-count: 8000
+    uri-encoding: UTF-8
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  # 开启驼峰命名
+  mapper-locations: classpath:mappers/*.xml  # 配置配置文件的位置
+
+spring:
+  #数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/20231109?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+  devtools:
+    #热部署生效,默认就是true
+    restart:
+      enabled: true
+  application:
+    name: cart-server  #服务名称
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848  #配置nacos服务地址
