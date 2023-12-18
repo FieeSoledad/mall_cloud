@@ -34,4 +34,14 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(int userid,String password) {
         return userDao.updatePassword(userid,password)!=0;//修改的行数大于一行就是True
     }
+
+    @Override
+    public boolean insertUser(int userId, String password) {
+        return userDao.insertUser(userId,password)==1;
+    }
+
+    @Override
+    public boolean updateLocation(int userId,String location) {
+        return userDao.updateLocation(userId,location)==1;
+    }
 }

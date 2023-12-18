@@ -14,17 +14,19 @@ import reactor.core.publisher.Mono;
  * @Description:
  */
 
-//@Component
-public class CorsGlobalFilter implements GatewayFilter, Ordered {
 
-    @Override
+//Gateway对于options请求有特殊机制
+//@Component
+public class CorsGlobalFilter {
+
+
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         exchange.getResponse().getHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        exchange.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type, authorization");
+        exchange.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Content-Type,authorization");
         return chain.filter(exchange);
     }
-    @Override
+
     public int getOrder() {
         return 0;
     }

@@ -1,4 +1,4 @@
-package com.example.user.controller;
+package com.example.item.controller;
 
 /**
  * @Title: Code.java
@@ -22,11 +22,5 @@ public class Code {
     public final static int SELECT_OK = 41;
 
     public final static int SELECT_ERR = 40;
-
-    public final static int LOGIN_SUCCESS = 111;
-
-    public final static int USER_NOEXSIT = 0;
-
-    public final static int PASSWORD_ERR = 222;
 
 }

@@ -6,12 +6,8 @@ import com.example.user.jwttools.JwtUtil;
 import com.example.user.service.UserService;
 import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,21 +19,21 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
-
+    //
     @GetMapping
     public Result selectUserById(@RequestParam(name="userid",defaultValue = "") int userid,@RequestHeader(value="truth",required = false) String truth,
                                  @RequestHeader(value="user-info",required = false) String user_info){
 
         System.out.println(truth); //统一过滤器添加的内容
 
-        System.out.println(user_info); //请求头中装载ThreadLocal
+        System.out.println(user_info);
+
+        System.out.println(UserContext.getUser()); //请求头中装载ThreadLocal
 
         System.out.println(UserContext.getUser()); //拦截器保存信息为ThreadLocal
-
 
         User user = userService.selectUserById(userid);
 
@@ -61,9 +57,9 @@ public class UserController {
     }
 
     @PutMapping
-    public Result updatePassword(@RequestParam(name = "userid", defaultValue = "") int userid,
-                                 @RequestParam(name = "password", defaultValue = "") String password) {
-        boolean flag = userService.updatePassword(userid,password);
+    public Result updatePassword(@RequestParam(name="userId") int userId,@RequestParam(name="password") String password) {
+
+        boolean flag = userService.updatePassword(userId,password);
 
         return flag ? new Result(null,Code.UPDATE_OK,"修改成功"): new Result(null,Code.UPDATE_ERR,"修改失败");
     }
@@ -84,36 +80,41 @@ public class UserController {
 
             response.setHeader(HttpHeaders.AUTHORIZATION,token);
 
-            response.setHeader("Access-Control-Expose-Headers","*");
-
-            ResponseCookie cookie = ResponseCookie.from("Authorization", token).build();
-
-
-            return new Result(null,Code.LOGIN_SUCCESS,"success");
+            return new Result(null,Code.LOGIN_SUCCESS,"login success");
+        }else if(user==null)
+        {
+            return new Result(null, Code.USER_NOEXSIT,"Please Register!");
         }else
         {
-            return new Result(null, Code.USER_NOEXSIT,"failure");
+            return new Result(null,Code.PASSWORD_ERR,"Password Doesn't Match!");
         }
     }
 
-    @GetMapping("/login")
-    public Result login(@RequestParam(name="userId",defaultValue = "") int userId,
-                        @RequestParam(name="password",defaultValue = "") String password,HttpServletResponse response){
+    @PostMapping("/register")
+    public Result register(@RequestBody Map<String,String> requestBody)
+    {
+        int userId = Integer.parseInt(requestBody.get("userId"));
 
-        User user = userService.selectUserById(userId);
+        String password = requestBody.get("password");
 
-        if(user!=null && password.equals(user.getPassword()))
+        if(userService.insertUser(userId,password))
         {
-            String token = JwtUtil.generateToken(Long.valueOf(user.getUserid()));
-
-            response.setHeader(HttpHeaders.AUTHORIZATION,token);
-
-            response.setHeader("Access-Control-Expose-Headers","authorization");
-
-            return new Result(null,Code.LOGIN_SUCCESS,"success");
+            return new Result("",Code.INSERT_OK,"注册成功");
         }else
         {
-            return new Result(null, Code.USER_NOEXSIT,"failure");
+            return new Result("",Code.INSERT_ERR,"注册失败");
+        }
+    }
+
+    @PutMapping("/location")  //更新地址
+    public Result addLocation(@RequestParam(name="userId") int userId,@RequestParam(name="location") String location)
+    {
+        if(userService.updateLocation(userId,location))
+        {
+            return new Result(null,Code.UPDATE_OK,"修改成功");
+        }else
+        {
+            return new Result(null,Code.UPDATE_ERR,"修改失败");
         }
     }
 }

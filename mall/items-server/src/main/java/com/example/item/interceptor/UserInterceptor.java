@@ -1,4 +1,4 @@
-package com.example.user.interceptor;
+package com.example.item.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: 2023/12/14 21:48
  * @Description:
  */
-//拦截器
 public class UserInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

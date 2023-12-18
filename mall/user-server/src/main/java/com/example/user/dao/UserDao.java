@@ -21,4 +21,8 @@ public interface UserDao {
 
     int updatePassword(@Param("userid")int userid,@Param("password") String password);  //这里为什么非得要？
 
+    int insertUser(@Param("userId") int userId,@Param("password") String password);
+
+    int updateLocation(@Param("userId") int userId,@Param("location") String location);
+
 }

@@ -19,4 +19,5 @@ public class User {
     private String username;
     private String gender;
     private String level;
+    private String location;
 }

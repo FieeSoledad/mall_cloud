@@ -6,7 +6,7 @@
     select *
     from users
     where userid=#{userid};
-</select>
+    </select>
 
     <select id="getAllUsers" resultType="com.example.user.domain.User">
         select *
@@ -17,6 +17,16 @@
         update users
         set password = #{password}
         where userid=#{userid};
+    </update>
+
+    <insert id="insertUser">
+        insert into users(userid,password,username,gender,level) values (#{userId},#{password},"MallUser","","普通用户")
+    </insert>
+
+    <update id="updateLocation">
+        update users
+        set location = #{location}
+        where userid=#{userId};
     </update>
 
 </mapper>

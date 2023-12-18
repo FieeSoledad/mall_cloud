@@ -11,6 +11,21 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true # 支持浏览器CORS preflight请求  默认options请求会被拦截
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"  #允许哪些网站的跨域请求
+            allowed-methods:    #允许跨域的ajax的请求方法
+              - POST
+              - GET
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowed-headers: "*" #允许跨域请求携带的头信息
+            exposedHeaders: "*"   #允许暴露的响应头
+            allowCredentials: true    #是否允许携带cookie
+            maxAge: 86400   #这次跨域请求的有效期
       routes:
         - id: user-server
           uri: lb://user-server #lb代表 loadbalancer 负载均衡

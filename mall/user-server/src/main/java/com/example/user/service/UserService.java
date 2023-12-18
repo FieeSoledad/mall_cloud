@@ -16,4 +16,8 @@ public interface UserService {
     List<User> getAllUsers();
 
     boolean updatePassword(int userid,String password);
+
+    boolean insertUser(int userId,String password);
+
+    boolean updateLocation(int userId,String location);
 }

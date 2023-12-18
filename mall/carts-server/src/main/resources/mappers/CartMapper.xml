@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.carts.dao.CartDao">
-    <resultMap id="cartResultMap" type="com.example.carts.domain.Cart">
+<mapper namespace="com.example.cart.dao.CartDao">
+    <resultMap id="cartResultMap" type="com.example.cart.domain.Cart">
         <result column="itemname" property="itemname"/>
         <result column="price" property="unitprice"/>
-        <result column="amount" property="amount"/>
+        <result column="total" property="amount"/>
+        <result column="itemid" property="itemid"/>
     </resultMap>
 
     <select id="getCartsByUserId" resultMap="cartResultMap">
-        select it.itemname,it.price,ca.amount
+        select it.itemname,it.price,sum(ca.amount) as total,ca.itemid
         from carts ca
         join items it on it.itemid=ca.itemid
         where userid = #{userid}
+        group by it.itemname,it.price,ca.itemid
+    </select>
+
+    <insert id="insertCart">
+        insert into
+        carts (userid,itemid,amount) values (#{userId},#{itemid},#{amount});
+    </insert>
+
+    <delete id="deleteCart">
+        delete
+        from carts
+        where userid=#{userId} and itemid=#{itemid};
+    </delete>
+
+    <update id="updateAmount">
+        update
+        carts
+        set amount = #{amount}
+        where userid=#{userId} and itemid=#{itemid};
+    </update>
+
+    <select id="getCartsByUserIdAndItemId" resultType="com.example.cart.domain.Cart">
+        select *
+        from carts
+        where userid=#{userId} and itemid=#{itemid};
     </select>
 </mapper>
 

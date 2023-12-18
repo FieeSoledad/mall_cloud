@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.items.dao.ItemDao">
+<mapper namespace="com.example.item.dao.ItemDao">
 
-    <select id="selectItemById" resultType="com.example.items.domain.Item">
+    <select id="selectItemById" resultType="com.example.item.domain.Item">
         select *
         from items
         where itemid=#{itemid};
     </select>
 
-    <select id="getAllItems" resultType="com.example.items.domain.Item">
+    <select id="getAllItems" resultType="com.example.item.domain.Item">
         select *
         from items
     </select>
+
+    <select id="searchItemByType" resultType="com.example.item.domain.Item">
+        select *
+        from items
+        where type like CONCAT("%",#{type},"%");
+    </select>
+
+
+    <select id="searchItemByPrice" resultType="com.example.item.domain.Item">
+        select *
+        from items
+        where price between #{bottom} and #{top};
+    </select>
+
+    <insert id="insertItem" >
+        insert into
+        items(itemname,price,stock,type)
+        values (#{itemname},#{price},#{stock},#{type})
+    </insert>
 </mapper>
 

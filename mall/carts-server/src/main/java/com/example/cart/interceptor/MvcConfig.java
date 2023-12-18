@@ -1,4 +1,4 @@
-package com.example.user.interceptor;
+package com.example.cart.interceptor;
 
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -13,10 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date: 2023/12/14 21:55
  * @Description:
  */
-
-//注册拦截器
 @Configuration
-@ConditionalOnClass(DispatcherServlet.class)  //条件注入
+@ConditionalOnClass(DispatcherServlet.class)
 public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
